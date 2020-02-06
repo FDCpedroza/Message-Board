@@ -88,9 +88,9 @@ class UsersController extends AppController {
                 
                 //added some data during beforesave in users model
                 $this->User->create();
-                $this->User->save($user);
-               
-                $this->Session->setFlash(__('Saved!'));
+                if($this->User->save($user)) {
+                    $this->Session->setFlash(__('Saved!'));
+                }
             }
         }
         

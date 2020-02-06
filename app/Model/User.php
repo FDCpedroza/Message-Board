@@ -4,13 +4,13 @@ App::uses('AuthComponent', 'Controller/Component');
 
 class User extends AppModel {
     
-    // public function beforeSave($options = array()) {
-    //     $this->data['User']['password'] = AuthComponent::password(
-    //       $this->data['User']['password']
-    //     );
-    //     return true;
-    // }
-    
+    public $hasMany = array(
+        'Messages' => array(
+            'className' => 'Message',
+            'foreignKey' => 'from_id',
+        )
+    );
+
     public function beforeSave($options = array()) {
     
        if(!$this->data[$this->alias]['id']) {
@@ -31,4 +31,15 @@ class User extends AppModel {
       
       return true;
   }
+  
+    public function getRecepient($id) {
+        
+        //returns all user except the logged in user
+        return $this->find('list', array(
+            'conditions' => array('id !=' => $id),
+            'fields' => array('id', 'name')
+        ));
+    }
+  
+  
 }

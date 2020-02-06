@@ -53,12 +53,25 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 						array('style' => 'float:right; margin-right:30px;')
 					); 
 					
-					echo $this->html->tag('h2', AuthComponent::user()['name'], ['style' => 'font-size:230%;']);
+					$avatar = 'https://ui-avatars.com/api/?name='.AuthComponent::user()['name'];
+                    if(!AuthComponent::user()['image']){
+                        $avatar = AuthComponent::user()['image'];
+                    }
+                    echo $this->Html->image($avatar , 
+                                        array(
+                                            'alt' => 'CakePHP',
+                                            'style' => 'width:50px; 
+														height:50px;
+														float:left;'
+                                            )
+                                        );
+					echo $this->html->tag('span', AuthComponent::user()['name'], ['style' => 'float:left; padding-top:1%;']);
 					
 				
 				 }
 			?>
-
+	<br><br>
+	<br><hr><br><br>
 			<?php echo $this->Flash->render(); ?>
 
 			<?php echo $this->fetch('content'); ?>
