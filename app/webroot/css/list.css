@@ -14,4 +14,24 @@
     bottom: 0px; 
     padding-bottom: 3%;
     padding-left: 8%;
+    font-size: .7em;
+}
+
+p.name {
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.content-div {
+    padding-top: 2%;
+    padding-left: 8%;
+}
+
+
+
+.chat-paragraph :before {
+    content: open-quote;
+}
+.chat-paragraph :after {
+    content: close-quote;
 }

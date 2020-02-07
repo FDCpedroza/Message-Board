@@ -1,4 +1,5 @@
 <?php
+App::uses('Sanitize', 'Utility');
 
 class Message extends AppModel {
     // /public $belongsTo = 'User';
@@ -9,51 +10,47 @@ class Message extends AppModel {
     //     )
     // );
     
-    public function getMessageList($id) {
     
-        // $options = [
-        //     'fields' => array('to_id','content','created','to.id' ,'to.name', 'to.image','from.id' ,'from.name', 'from.image'),
-        //     'joins' => array(
-        //         array(
-        //             'table' => 'users',
-        //             'alias' => 'to',
-        //             'type' => 'LEFT',
-        //             'conditions' => array('to.id = message.to_id')
-        //         ), array(
-        //             'table' => 'users',
-        //             'alias' => 'from',
-        //             'type' => 'LEFT',
-        //             'conditions' => array('from.id = message.from_id')
-        //         ),
-        //     ),
-        //     'conditions' => array('OR' => array('to_id' => $id, 'from_id' => $id)),
-        //     'order' => array('created' => 'desc')
-        // ];
-        
-        
-        $options = [
-            //'fields' => array('to_id','content','created','DISTINCT  (to.id)' ,'to.name', 'to.image','DISTINCT  (from.id)' ,'from.name', 'from.image'),
-            'fields' => array('to_id','content','created','to.id' ,'to.name', 'to.image','from.id' ,'from.name', 'from.image'),
-            'joins' => array(
-                array(
-                    'table' => 'users',
-                    'alias' => 'to',
-                    'type' => 'LEFT',
-                    'conditions' => array('to.id = message.to_id')
-                ), array(
-                    'table' => 'users',
-                    'alias' => 'from',
-                    'type' => 'LEFT',
-                    'conditions' => array('from.id = message.from_id')
-                ),
-            ),
-            'conditions' => array('OR' => array('to_id' => $id, 'from_id' => $id)),
-            'order' => array('created' => 'desc'),
-            'group' => array('to.id', 'from.id')
+    
+    public function getConversation($id){
+        return $this->query('SELECT * 
+                FROM `cake_msg`.`messages` AS `message`
+                WHERE (`message`.`to_id` = 20 AND `message`.`from_id` = 2)
+                OR (`message`.`to_id` = 2 AND `message`.`from_id` = 20)
+                ORDER BY `message`.`created` DESC');
+    } 
+    
+    public function getMessageList($id) {
+        $safe_id = Sanitize::escape($id);
+        return $this->query("SELECT 
+                `latest_chat`.`id`, 
+                `latest_chat`.`to_id`, 
+                `latest_chat`.`from_id`, 
+                `latest_chat`.`content`, 
+                `latest_chat`.`created`, 
+                `chat_mate`.`id`,
+                `chat_mate`.`name`, 
+                `chat_mate`.`image`
+            FROM
+                (SELECT `messages`.* FROM
+                    (SELECT MAX(`message`.`id`) AS `id`
+                    FROM `cake_msg`.`messages` AS `message`
+                    WHERE `message`.`to_id` = ".$safe_id."
+                    OR `message`.`from_id` = ".$safe_id."
+                    GROUP BY 
+                            (CASE
+                                WHEN `message`.`to_id` = ".$safe_id." THEN `message`.`from_id`
+                                WHEN `message`.`from_id` = ".$safe_id." THEN `message`.`to_id`
+                            END)) AS `max_id`
+                INNER JOIN `cake_msg`.`messages` 
+                ON `max_id`.`id` = `messages`.`id`) AS `latest_chat`
+            LEFT JOIN `cake_msg`.`users` AS `chat_mate`
+            ON 
+            (CASE 
+                 WHEN `latest_chat`.`to_id` = ".$safe_id." THEN `chat_mate`.`id` = `latest_chat`.`from_id`
+                 WHEN `latest_chat`.`from_id` = ".$safe_id." THEN `chat_mate`.`id` = `latest_chat`.`to_id`
+             END) ");
             
-        ];
-        
-        return $this->find('all', $options);
     }
 
 }

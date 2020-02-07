@@ -5,15 +5,14 @@ class MessagesController extends AppController {
     public $uses = ['message', 'user'];
     
     public function list(){
-    
+        
         $current_user = $this->Auth->user('id');        
         $this->set('messageList' ,$this->message->getMessageList($current_user));
-        // echo '<pre>';
-        // var_dump('messageList' ,$this->message->getMessageList($current_user));
-        //    die();
+        
     }
     
     public function compose(){
+        
         $current_user = $this->Auth->user('id');
         $alluser = $this->user->getRecepient($current_user);        
         $this->set('users', $alluser);
@@ -31,14 +30,25 @@ class MessagesController extends AppController {
         
        $this->message->create();
        if($this->message->save($msg)) {
-            $this->flash(__("Message Sent!"), array("action" => "compose"));
+        $this->redirect(array("controller" => "messages", 
+                        "action" => "conversation",
+                         $msg['to_id'] ));
        }else{
             $this->flash(__("Please try again!"), array("action" => "compose"));;
        }
        
     }
-    public function conversation($name) {
+    
+    public function conversation($id, $name = null) {
+        $chat_mate = $this->user->find('first', array('conditions' => array('User.id' => $id)));
+        if(is_null($name)){
+            $name = $chat_mate['user']['name'];
+        }
+        
         $this->set('name', $name);
+        
+        
+        
     }
     
 }

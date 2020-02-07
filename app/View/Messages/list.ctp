@@ -14,17 +14,17 @@ echo $this->html->css('list');
   
 
 <?php
-foreach($messageList as $data) {
-    $link = '/cake-msg/messages/conversation/'.((int)$data['from']['id'] == AuthComponent::user('id')? $data['to']['name'] : $data['from']['name']);
+foreach($messageList as $message) {
+    $link = '/cake-msg/messages/conversation/'.$message['chat_mate']['id'] .'/'.$message['chat_mate']['name'];
     
 ?>
     <a href="<?php echo $link?>">
         <div class='msg-div'>
             <div class='avatar-div'>
                 <?php
-                    $avatar = 'https://ui-avatars.com/api/?name='.$data['to']['name'];
-                    if(!$data['to']['name']){
-                        $avatar = $data['to']['image'];
+                    $avatar = $message['chat_mate']['image'];
+                    if(!$message['chat_mate']['image']){
+                        $avatar = 'https://ui-avatars.com/api/?name='.$message['chat_mate']['name'];
                     }
                     echo $this->Html->image($avatar , 
                                         array(
@@ -34,17 +34,18 @@ foreach($messageList as $data) {
                                             )
                                         );
                 ?>
+            <div >
+                <p class='name'><?php echo $message['chat_mate']['name'];?></p>
             </div>
+            </div>
+           
             <div class='content-div'>
-                <?php
-                    echo $data['message']['content'];        
-                ?>
+                <p class='chat-paragraph'><i><?php echo $message['latest_chat']['content'];?></i></p>
             </div>
             <div class='date-div'> 
-                <?php
-                    echo $data['message']['created'];        
-                ?>
+                <?php echo $message['latest_chat']['created'];?>
             </div>
+           
         </div>
 
 
