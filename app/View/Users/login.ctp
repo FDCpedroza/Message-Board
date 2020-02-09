@@ -1,15 +1,44 @@
-<h2>Login Page</h2>
+<div class="container-fluid">
+    <div class="row  justify-content-center">
+        <div class='card justify-content-center mt-5'>
+            <div class="card-header">
+                Login
+            </div>
+            <div class="card-body text-center">
+            <?php 
 
-<?php 
+                echo $this->Form->create('User');
+                echo $this->Form->input('email', array(
+                    'class' => 'form-control',
+                    'label' => false,
+                    'placeholder' => 'Email'
+                ));
+                echo '<br>';
+                echo $this->Form->input('password', array( 
+                    'class' => 'form-control',
+                    'label' => false,
+                    'placeholder' => 'Password'
+                ));
+                echo '<br>';
+                echo $this->Form->end(array(
+                    'label' => __('Login'),
+                    'class' => 'btn',
+                    'div' => array(
+                        'class' => 'control-group',
+                        ),
+                    'before' => '<div class="controls">',
+                    'after' => '</div>'
+                ));
 
-    echo $this->Form->create('User');
-    echo $this->Form->input('email');
-    echo $this->Form->input('password');
-    echo $this->Form->end('Login');
-?>
-<br>
-<?php
-    echo $this->Html->link('Register', '/users/register');
-    
-    
-  
+                //echo $this->Form->end('login');
+            ?>
+            <br>
+            <?php
+                echo $this->Html->link('Sign Up!', '/users/register');
+                
+                
+            ?>
+            </div>
+        </div>
+    </div>
+</div>

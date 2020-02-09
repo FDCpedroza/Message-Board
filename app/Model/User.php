@@ -13,7 +13,7 @@ class User extends AppModel {
 
     public function beforeSave($options = array()) {
     
-       if(!$this->data[$this->alias]['id']) {
+       if(isset($this->data[$this->alias]['id'])) {
             //hash password
             if (!empty($this->data[$this->alias]['password'])) {
                 $passwordHasher = new SimplePasswordHasher(array('hashType' => 'sha256'));
