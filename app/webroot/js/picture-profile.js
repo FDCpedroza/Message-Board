@@ -14,6 +14,7 @@ function displayPicture(input) {
       
       reader.onload = function(e) {
         $('#user-avatar').attr('src', e.target.result);
+        console.log(e.target.result)
       }
       
       reader.readAsDataURL(input.files[0]);

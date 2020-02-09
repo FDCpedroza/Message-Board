@@ -1,7 +1,7 @@
 $(document).ready(function() {
     
-    if ($("#addUserForm").length > 0) {
-        $("#addUserForm").validate({
+    if ($("#app-form").length > 0) {
+        $("#app-form").validate({
             onkeyup: false,
             onclick: false,
             onfocusout: false,

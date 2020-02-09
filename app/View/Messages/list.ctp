@@ -1,6 +1,8 @@
 <h2>Messagess!</h2>
 
 <?php
+$this->extend('/Layouts/card');
+echo $this->element('navbar', array('profileActive' => 'active'));
 
 echo $this->html->link('New Message', ['controller' => 'messages', 'action' => 'compose']);
 //echo $this->html->css('https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css');
@@ -15,8 +17,13 @@ echo $this->html->css('list');
 
 <?php
 foreach($messageList as $message) {
-    $link = '/cake-msg/messages/conversation/'.$message['chat_mate']['id'] .'/'.$message['chat_mate']['name'];
-    
+    // $link = '/cake-msg/messages/conversation/'.$message['chat_mate']['id'] .'/'.$message['chat_mate']['name'];
+    echo $link =  Router::url([
+        'controller' => 'messages', 
+        'action' => 'conversation', 
+        $message['chat_mate']['id'],
+        $message['chat_mate']['name'],
+        ]);
 ?>
     <a href="<?php echo $link?>">
         <div class='msg-div'>

@@ -9,41 +9,12 @@ class UsersController extends AppController {
         $this->Auth->allow('register', 'create', 'checkEmail');
     }
     
-    public function logout() {
-        return $this->redirect($this->Auth->logout());
-    }
-
-    public function login() {
-       
-        if ($this->request->is('post')) {
-            
-            $attempt = $this->request->data['User'];
-            $user = $this->User->findByEmail($attempt['email']);
-            
-            if(!empty($user)) {
-               
-                $passwordHasher = new SimplePasswordHasher(array('hashType' => 'sha256'));
-                $valid_user = $passwordHasher->check($attempt['password'], $user['User']['password']);
-               
-                if($valid_user) {
-                    $this->Auth->login($user['User']);
-                    //store value on last login
-                    $this->User->id = $this->Auth->user('id');
-                    $this->User->saveField('last_login_time', date("Y-m-d H:i:s")); 
-                    return $this->redirect('profile');
-                }
-            }
-            $this->flash(__("Incorrect credentials.."), array("action" => "login"));
-        }
-        
-        
-    }
-    
     public function register() {
         
     }
     
     public function profile() {
+        
         $user = $this->Auth->user();
         $updatedUser = $this->User->find('first', array(
             'conditions' => array('User.id' => $user['id'])
@@ -53,7 +24,7 @@ class UsersController extends AppController {
     
         
         if($this->request->is('post')) {
-        
+            // var_dump($this->request->data['User']); die();
             if (
                 !empty($this->request->data['User']['Upload Pic']['tmp_name'])
                 && is_uploaded_file($this->request->data['User']['Upload Pic']['tmp_name'])
@@ -64,12 +35,12 @@ class UsersController extends AppController {
                     $this->data['User']['Upload Pic']['tmp_name'],
                     WWW_ROOT . DS . 'img' . DS . $filename
                 );
-                $this->User->set(['image' => $this->request->data['User']['Upload Pic']['name']]);
+                // $this->User->set(['image' => $this->request->data['User']['Upload Pic']['name']]);
             }
     
             $this->User->read(null, $user['id']);
             $this->User->set([
-                // 'image' => $this->request->data['User']['Upload Pic']['name'],
+                'image' => $this->request->data['User']['Upload Pic']['name'],
                 'name' => $this->request->data['User']['name'],
                 'email' => $this->request->data['User']['email'],
                 'birthdate' => $this->request->data['User']['date'],
@@ -137,6 +108,36 @@ class UsersController extends AppController {
         
         
     }
+
+
+
+    // public function logout() {
+    //     return $this->redirect($this->Auth->logout());
+    // }
+
+    // public function login() {
+       
+    //     if ($this->request->is('post')) {
+            
+    //         $attempt = $this->request->data['User'];
+    //         $user = $this->User->findByEmail($attempt['email']);
+            
+    //         if(!empty($user)) {
+               
+    //             $passwordHasher = new SimplePasswordHasher(array('hashType' => 'sha256'));
+    //             $valid_user = $passwordHasher->check($attempt['password'], $user['User']['password']);
+               
+    //             if($valid_user) {
+    //                 $this->Auth->login($user['User']);
+    //                 //store value on last login
+    //                 $this->User->id = $this->Auth->user('id');
+    //                 $this->User->saveField('last_login_time', date("Y-m-d H:i:s")); 
+    //                 return $this->redirect('profile');
+    //             }
+    //         }
+    //         $this->flash(__("Incorrect credentials.."), array("action" => "login"));
+    //     }
+    // }
     
     
 }

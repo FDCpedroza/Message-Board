@@ -12,8 +12,8 @@ class User extends AppModel {
     );
 
     public function beforeSave($options = array()) {
-    
-       if(isset($this->data[$this->alias]['id'])) {
+       //check if user id exists in the data 
+        if(!array_key_exists('id',$this->data[$this->alias])) {
             //hash password
             if (!empty($this->data[$this->alias]['password'])) {
                 $passwordHasher = new SimplePasswordHasher(array('hashType' => 'sha256'));

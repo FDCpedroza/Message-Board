@@ -31,6 +31,33 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
+	//login and logout custom routes
+	Router::connect(
+		'/:action', 
+		array(
+			'controller' => 'loginlogout', 
+			'action' => array('login', 'logout')
+		));
+	
+	//makes the prefix "/users/:action" into '/user/:action'  
+	Router::connect('/user/:action', array('controller' => 'users'));
+
+	// Router::connect('/message/**', 
+	// 	array('controller' => 'messages', 'action' => 'conversation'), 
+	// 	array('pass' => array('id'))
+	// );
+	
+	// //  /messsages > /message
+	// Router::connect('/message/**', array('controller' => 'messages'));
+
+	
+	
+	
+
+	
+
+
+
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.

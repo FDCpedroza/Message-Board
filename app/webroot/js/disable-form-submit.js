@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    $("#addUserForm").submit(function (e) {
+    $("#app-form").submit(function (e) {
 
         //stop submitting the form to see the disabled button effect
         e.preventDefault();

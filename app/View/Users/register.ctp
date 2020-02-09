@@ -4,7 +4,7 @@
     echo $this->Form->create(
         'User',
         array(
-            'id' => 'addUserForm',
+            'id' => 'app-form',
             'url' => array(
                 'controller' => 'users',
                 'action' => 'create'
