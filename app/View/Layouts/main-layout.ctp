@@ -10,7 +10,7 @@
         echo $this->Html->css('bootstrap.min');
         echo $this->Html->script('https://code.jquery.com/jquery-1.10.2.js');
         echo $this->Html->script('bootstrap.min');
-        echo $this->Html->css('my-style');    
+        // echo $this->Html->css('my-style');    
         echo $this->fetch('css');
         echo $this->fetch('script');
         echo $this->Html->css('general');

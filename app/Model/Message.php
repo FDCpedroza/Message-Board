@@ -9,15 +9,23 @@ class Message extends AppModel {
     //         'foreignKey' => 'to_id',
     //     )
     // );
+    public function paginate($user, $chatMate, $offset = 0, $count = 10){
+        return $this->query("SELECT * 
+        FROM `cake_msg`.`messages` AS `message`
+        WHERE (`message`.`to_id` = '$user' AND `message`.`from_id` = '$chatMate')
+        OR (`message`.`to_id` = '$chatMate' AND `message`.`from_id` = '$user')
+        ORDER BY `message`.`created` DESC
+        LIMIT $offset, $count");
+    } 
+
     
     
-    
-    public function getConversation($id){
-        return $this->query('SELECT * 
-                FROM `cake_msg`.`messages` AS `message`
-                WHERE (`message`.`to_id` = 20 AND `message`.`from_id` = 2)
-                OR (`message`.`to_id` = 2 AND `message`.`from_id` = 20)
-                ORDER BY `message`.`created` DESC');
+    public function getConvo($user, $chatMate){
+        return $this->query("SELECT * 
+            FROM `cake_msg`.`messages` AS `message`
+            WHERE (`message`.`to_id` = '$user' AND `message`.`from_id` = '$chatMate')
+            OR (`message`.`to_id` = '$chatMate' AND `message`.`from_id` = '$user')
+            ORDER BY `message`.`created` DESC");
     } 
     
     public function getMessageList($id) {
@@ -46,10 +54,11 @@ class Message extends AppModel {
                 ON `max_id`.`id` = `messages`.`id`) AS `latest_chat`
             LEFT JOIN `cake_msg`.`users` AS `chat_mate`
             ON 
-            (CASE 
-                 WHEN `latest_chat`.`to_id` = ".$safe_id." THEN `chat_mate`.`id` = `latest_chat`.`from_id`
-                 WHEN `latest_chat`.`from_id` = ".$safe_id." THEN `chat_mate`.`id` = `latest_chat`.`to_id`
-             END) ");
+                (CASE 
+                    WHEN `latest_chat`.`to_id` = ".$safe_id." THEN `chat_mate`.`id` = `latest_chat`.`from_id`
+                    WHEN `latest_chat`.`from_id` = ".$safe_id." THEN `chat_mate`.`id` = `latest_chat`.`to_id`
+                END) 
+            ORDER BY `latest_chat`.`created` DESC");
             
     }
 

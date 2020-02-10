@@ -1,37 +1,3 @@
-.msg-div{
-    height: 150px;
-    margin-top: 20px;
-    position: relative;
-}
-
-.avatar-div{
-    margin-left:30px;
-    float: left;
-}
-
-.date-div{
-    position: absolute; 
-    bottom: 0px; 
-    padding-bottom: 3%;
-    padding-left: 8%;
-    font-size: .7em;
-}
-
-p.name {
-    text-align: center;
-    text-transform: capitalize;
-}
-
-.content-div {
-    padding-top: 2%;
-    padding-left: 8%;
-}
-
-
-
-.chat-paragraph :before {
-    content: open-quote;
-}
-.chat-paragraph :after {
-    content: close-quote;
+.card-body {
+    padding: unset;
 }

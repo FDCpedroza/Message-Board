@@ -19,7 +19,7 @@ div#ui-datepicker-div {
     width: 100%;
     position: absolute;
     bottom: 0px;
-    margin-left: -20px;
+    z-index: 99;
     background-color: white;    
 }
 

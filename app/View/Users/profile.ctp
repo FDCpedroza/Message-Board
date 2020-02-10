@@ -1,6 +1,7 @@
 <?php 
     $this->extend('/Layouts/card');
     echo $this->element('navbar', array('profileActive' => 'active'));
+    echo $this->html->css('navbar');
 ?>
 
 
