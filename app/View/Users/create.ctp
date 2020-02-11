@@ -5,6 +5,8 @@
 
 echo $this->Html->link(
     'Login',
-    '/users/login',
-    array('class' => 'button', 'target' => '_blank')
+    array('controller' => 'loginlogout', 'action' => 'login'),
+    array('class' => 'button')
 );
+
+

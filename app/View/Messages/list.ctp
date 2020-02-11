@@ -1,10 +1,9 @@
-
-
 <?php
 $this->extend('/Layouts/card');
 echo $this->element('navbar', array('messageListActive' => 'active'));
 //echo $this->html->link('New Message', ['controller' => 'messages', 'action' => 'compose']);
 echo $this->html->css('list');
+echo $this->html->script('list.js');
 ?>
 
 <div class="list-group">
@@ -13,8 +12,9 @@ echo $this->html->css('list');
         $link =  Router::url([
             'controller' => 'messages', 
             'action' => 'conversation', 
-            $message['chat_mate']['id'],
-            $message['chat_mate']['name'],
+            // 'name' => $message['chat_mate']['name'],
+            'id' => $message['chat_mate']['id'],
+            
         ]);
     ?>
     <a href="<?php echo $link?>" class="list-group-item list-group-item-action">
@@ -58,17 +58,22 @@ echo $this->html->css('list');
                             </div>
                     </div>
                 </div>
-            </div>
-            
-            
-            
-            
-            
-            
-            
+            </div>               
         </div>
     </a>
-
     <?php endforeach; ?>
+    <div class="row pb-5" id='show-res'>
+        <div class='col text-center'>
+        <?php echo $this->Html->link(
+        'Show Messages',
+        array(
+            'controller' => 'messages', 
+            'action' => 'loadMessageList'),
+        array(
+            'id' => 'show-more-msg',
+            ));?>
+        </div>
+    
+    </div>
 </div>
 

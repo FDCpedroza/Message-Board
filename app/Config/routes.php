@@ -30,6 +30,8 @@
  * ...and connect the rest of 'Pages' controller's URLs.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+	
+	Router::connect('/message/inbox/:id', array('controller' => 'messages', 'action' => 'conversation'));
 
 	//login and logout custom routes
 	Router::connect(

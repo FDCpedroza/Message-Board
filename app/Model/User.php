@@ -40,6 +40,12 @@ class User extends AppModel {
             'fields' => array('id', 'name')
         ));
     }
+    
+    public function getUser($id) {
+        return $this->query("SELECT `id`, `name`, `email`, `image`, `gender`,`birthdate`, `hubby`, `last_login_time`, `created`, `modified`
+            FROM `users`
+            WHERE `id` = $id");
+    }
   
   
 }

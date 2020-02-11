@@ -9,7 +9,7 @@
                                 <?php if(AuthComponent::user()): ?>
                                     <?php
                                         $avatar = 'https://ui-avatars.com/api/?name='.AuthComponent::user()['name'];
-                                        if(!AuthComponent::user()['image']){
+                                        if(AuthComponent::user()['image']){
                                             $avatar = AuthComponent::user()['image'];
                                         }
                                     ?> 

@@ -4,6 +4,21 @@ class MessagesController extends AppController {
     
     public $uses = ['message', 'user'];
     
+    
+    public function loadMessageList() {
+        $this->render(false);
+        $offset = $this->request->data['offset'];
+        $count = $this->request->data['count'];
+        $user = $this->request->data['user'];
+        
+        $datas = $this->message->paginateMessageList($user, $offset, $count);
+        
+        $this->response->type('application/json');
+        $this->response->body(json_encode($datas));
+        return;
+        
+    }
+    
     public function loadMsg() {
         $this->render(false);
         $offset = $this->request->data['offset'];
@@ -11,9 +26,18 @@ class MessagesController extends AppController {
         $user = $this->request->data['user'];
         $reciever = $this->request->data['reciever'];
         
-        $data = $this->message->paginate($user, $reciever, $offset, $count);
+        $datas = $this->message->paginateConvo($user, $reciever, $offset, $count);
+        $reciever = $this->user->getUser($reciever);
+        $user = $this->user->getUser($user);
+        
+        $res = array(
+            'data' => $datas,
+            'reciever' => $reciever[0]['users'],
+            'user' => $user[0]['users']
+        );
+        
         $this->response->type('application/json');
-        $this->response->body(json_encode($data));
+        $this->response->body(json_encode($res));
         return;
         
 
@@ -22,7 +46,7 @@ class MessagesController extends AppController {
     public function list(){
         
         $current_user = $this->Auth->user('id');        
-        $this->set('messageList' ,$this->message->getMessageList($current_user));
+        $this->set('messageList' ,$this->message->paginateMessageList($current_user));
         
     }
     
@@ -45,13 +69,24 @@ class MessagesController extends AppController {
         
        $this->message->create();
        if($this->message->save($msg)) {
-           $response = 'Success';
-        // $this->redirect(array("controller" => "messages", 
-        //                 "action" => "conversation",
-        //                  $msg['to_id'] ));
+           if(isset($this->request->data['Message']['compose'])){
+                $this->redirect(
+                    array(
+                        "controller" => "messages", 
+                        "action" => "conversation",
+                        'id' => $msg['to_id'] 
+                    ));
+                return ;
+           }
+        
+        $response = 'Success';
        }else{
-            $response = 'Fail';    
-        // $this->flash(__("Please try again!"), array("action" => "compose"));;
+            if(isset($this->request->data['Message']['compose'])){
+                $this->flash(__("Please try again!"), array("action" => "compose"));
+                return ;
+            }
+            
+        $response = 'Fail';
        }
        $this->response->type('application/json');
         $this->response->body(json_encode($response));
@@ -60,17 +95,22 @@ class MessagesController extends AppController {
        
     }
     
-    public function conversation($id, $name = null) {
-        $sender = $this->user->find('first', array('conditions' => array('User.id' => $id)));
+    public function conversation() {
+        // echo '<pre>';
+        // var_dump($this->request);
+        // die();
+      
+        $reciever = $this->user->getUser($this->request->id);
+        // echo '<pre>';
+        // var_dump($reciever);
         
-        if(is_null($name)){
-            $name = $sender['user']['name'];
-        }
-        $conversaion = $this->message->paginate($this->Auth->user('id'), $id);
+            $name = $reciever['0']['users']['name'];
+        
+        $conversaion = $this->message->paginateConvo($this->Auth->user('id'), $this->request->id);
 
         $this->set(
             array(
-                'sender' => $sender['user'] , 
+                'reciever' => $reciever['0']['users'] , 
                 'conversation' => $conversaion
             ));
     }

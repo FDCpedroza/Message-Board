@@ -58,12 +58,21 @@ var x = 10;
             type: 'POST',
             url: formUrl,
             data: formData,
-            success: function(data,textStatus,xhr){
-                   x = offset + 10;
-                   
+            success: function(res,textStatus,xhr){
+                x = offset + 10;
+                console.log(res.data)
+                
+                if(res.data.length == 0) {
+                    $('#show-more-msg').replaceWith('No more messages to show.');
+                }
+                
+                $.each(res.data, function(i, val) {
+                    // console.log(val)
+                    makeMsgDiv(val, res.user, res.reciever);
+                })
             },
             error: function(xhr,textStatus,error){
-                    alert(textStatus);
+                alert(textStatus);
             }
         });
         
@@ -71,13 +80,74 @@ var x = 10;
         
     });
     
+    function myAddClass(element, className = Array()) {
+        $.each(className, function(i, val) {
+            element.classList.add(val);
+        })
+    }
     
     
-    
-    
-    
-    
-    
+    function makeMsgDiv(res, user, reciever) {    
+        let main_div = document.createElement('div');
+        let div_msg = main_div.cloneNode();
+        let div_pic = main_div.cloneNode();
+        let img = document.createElement('img');
+        let userMsgDivClass = [
+            'message-div',
+            'col-9',
+            'alert',
+            'alert-secondary',
+            'offset-1'
+        ];
+        let recieverMsgDivClass = [
+            'message-div',
+            'col-9',
+            'alert',
+            'alert-primary'
+        ];
+        
+        div_msg.setAttribute('msg-id', res.message.id)
+        div_msg.textContent = res.message.content
+        myAddClass(main_div, ['row'])
+        myAddClass(div_pic, ['col-2'])
+        myAddClass(img, ['rounded-circle', 'user-pic'])
+        
+        if(res.message.from_id == user.id) {
+            avatar = 'https://ui-avatars.com/api/?name=' + user.name;
+            
+            if(user.image){
+                avatar = '/chat/img/' + user.image
+            }
+            
+            img.setAttribute('src', avatar);
+        
+            myAddClass(div_msg , userMsgDivClass);
+            
+            
+            main_div.appendChild(div_msg);
+            div_pic.appendChild(img)
+            main_div.appendChild(div_pic);
+            
+            
+        } else if(res.message.from_id == reciever.id) {
+            avatar = 'https://ui-avatars.com/api/?name=' + reciever.name;
+            
+             
+            if(reciever.image){
+                avatar = '/img/'+reciever.image
+            }
+            img.setAttribute('src', avatar);
+            
+            myAddClass(div_msg , recieverMsgDivClass);
+            main_div.appendChild(div_pic);
+            div_pic.appendChild(img)
+            main_div.appendChild(div_msg);
+            
+        }
+        
+        $("#message-div").append(main_div);
+        
+    }
     
   });
   

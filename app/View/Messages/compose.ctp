@@ -20,6 +20,16 @@ echo $this->form->input('Recepient',
     ),
     
 );
+
+echo $this->form->input('compose', 
+    array(
+        'value' => '1',
+        'class' => 'custom-select',
+        'type' => 'hidden'
+    ),
+    
+);
+
 echo '<br>';
 
 echo $this->form->textarea('Message', array(
@@ -39,6 +49,8 @@ echo '<br>'.$this->Form->end(array(
     'before' => '<div class="controls">',
     'after' => '</div>'
 ));
+
+
 
 echo $this->html->css('https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css');
 echo $this->html->css('compose-select');
