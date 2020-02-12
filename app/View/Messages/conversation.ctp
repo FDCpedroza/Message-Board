@@ -7,7 +7,26 @@ echo $this->Html->script('conversation.js');
 ?>
 
 
-<h5 class='text-capitalize'> <?php echo $reciever['name']?></h2>
+<div class='row'>
+    <div class='col'>
+        <h5 class='text-capitalize'> <?php echo $reciever['name']?></h2>
+    </div>
+    <div class='col text-right'>
+        <?php echo $this->Html->link(
+            'Delete Conversation',
+            array(
+                'controller' => 'messages', 
+                'action' => 'deleteConvo',
+                '?' => array(
+                    'user' => AuthComponent::user()['id'],
+                    'someone' => $reciever['id']
+                )
+            ));?>
+    </div>
+</div>
+
+
+
 
 
 <div class='row'>
@@ -58,10 +77,10 @@ echo $this->Html->script('conversation.js');
                 $avatar = AuthComponent::user()['image'];
             }
     ?>
-    <div class='row'>
-        
+    <div class='row' id='msg-row-id-<?php echo $convo['message']['id']?>'>
+        <!-- someone -->
         <?php if($convo['message']['to_id'] == AuthComponent::user()['id']): ?>    
-            <div class='col-2'>
+            <div class='col-2 text-right'>
                 <?php
                     echo $this->Html->image(
                         $avatar , 
@@ -71,15 +90,21 @@ echo $this->Html->script('conversation.js');
                             )
                         );
                 ?>
+                
             </div>
         <?php endif; ?>
-        
-        <div class='message-div col-9 alert <?php echo ($convo['message']['to_id'] == AuthComponent::user()['id']? 'alert-primary': 'alert-secondary offset-1');?>' msg-id='<?php echo $convo['message']['id']?>'>
-            <?php echo $convo['message']['content'] ?>
+            
+        <div class='message-div col-9 alert <?php echo ($convo['message']['to_id'] == AuthComponent::user()['id']? 'alert-primary': 'alert-secondary offset-1 ');?>' 
+        msg-id='<?php echo $convo['message']['id']?>'
+        msg-created='<?php echo $convo['message']['created']?>'
+        data-link='<?php echo Router::url(['controller' => 'messages', 'action' => 'detail', '?'=> array('id' => $convo['message']['id'])]);?>'
+        data-delete-link='<?php echo Router::url(['controller' => 'messages', 'action' => 'deleteMessage', '?'=> array('id' => $convo['message']['id'])]);?>'
+        >
+            <?php echo $convo['message']['content'] ?> <br>
         </div>
-        
+        <!-- user -->
         <?php if($convo['message']['to_id'] != AuthComponent::user()['id']): ?>    
-            <div class='col-2'>
+            <div class='col-2 text-left'>
                 <?php echo $this->Html->image(
                     $avatar , 
                     array(
@@ -87,6 +112,7 @@ echo $this->Html->script('conversation.js');
                         'class' => 'rounded-circle user-pic',
                         )
                     );?>
+                    
             </div>
         <?php endif; ?>
         
@@ -106,11 +132,15 @@ echo $this->Html->script('conversation.js');
         array(
             'id' => 'show-more-msg',
             'data-user-id' => AuthComponent::user()['id'],
-            'data-reciever-id' => $reciever['id']
+            'data-reciever-id' => $reciever['id'],
+            'data-path-to-img' => $this->webroot.'img/'
             ));?>
         </div>
     
     </div>
+    
+    
+    
     
     
   

@@ -1,3 +1,24 @@
 .card-body {
     padding: unset;
 }
+
+.list-img {
+    width:50px; 
+    height:50px;
+}
+
+.message-row {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+.list-date {
+    font-size: xx-small;
+}
+
+
+.delete-items {
+    margin: auto;
+}

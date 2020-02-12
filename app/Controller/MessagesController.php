@@ -96,16 +96,8 @@ class MessagesController extends AppController {
     }
     
     public function conversation() {
-        // echo '<pre>';
-        // var_dump($this->request);
-        // die();
-      
         $reciever = $this->user->getUser($this->request->id);
-        // echo '<pre>';
-        // var_dump($reciever);
-        
-            $name = $reciever['0']['users']['name'];
-        
+        $name = $reciever['0']['users']['name'];
         $conversaion = $this->message->paginateConvo($this->Auth->user('id'), $this->request->id);
 
         $this->set(
@@ -113,6 +105,30 @@ class MessagesController extends AppController {
                 'reciever' => $reciever['0']['users'] , 
                 'conversation' => $conversaion
             ));
+    }
+    
+    public function detail() {
+        //echo '<pre>';var_dump($this->request->query['id']); die();
+        $this->render(false);
+        $data = $this->message->getMessage($this->request->query['id']);    
+        $this->response->type('application/json');
+        $this->response->body(json_encode($data));
+        return;
+    }
+    
+    
+    public function deleteMessage() {
+        $this->render(false);
+        $data = $this->message->delete($this->request->query['id']);        
+        $this->response->type('application/json');
+        $this->response->body(json_encode($data));
+        return;
+    }
+    
+    public function deleteConvo() {        
+        $this->render(false);
+        $this->message->deleteConvo($this->request->query['user'], $this->request->query['someone']);
+        $this->flash(__("Conversation Deleted. Please wait for a moment Thank You!"), array("action" => "list"));
     }
     
 }

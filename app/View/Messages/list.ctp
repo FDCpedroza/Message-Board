@@ -6,7 +6,20 @@ echo $this->html->css('list');
 echo $this->html->script('list.js');
 ?>
 
-<div class="list-group">
+<div class="list-group" id='list-div'>
+    
+    <!-- <div class='row list-group-item list-group-item-action'>
+        <div class='col-10'>
+            <a href="" class='row'></a>
+        </div>
+        <div class='col-2'>
+            <div class='delete-items'>
+                Delete
+            </div>
+        </div>
+    </div>
+     -->
+    
     <?php foreach($messageList as $message): ?>
     <?php
         $link =  Router::url([
@@ -17,6 +30,9 @@ echo $this->html->script('list.js');
             
         ]);
     ?>
+    
+    
+    
     <a href="<?php echo $link?>" class="list-group-item list-group-item-action">
         <div class='row'>
             <div class='col row'>
@@ -59,9 +75,12 @@ echo $this->html->script('list.js');
                     </div>
                 </div>
             </div>               
+           
+        
         </div>
     </a>
     <?php endforeach; ?>
+    </div>
     <div class="row pb-5" id='show-res'>
         <div class='col text-center'>
         <?php echo $this->Html->link(
@@ -71,9 +90,16 @@ echo $this->html->script('list.js');
             'action' => 'loadMessageList'),
         array(
             'id' => 'show-more-msg',
+            'data-user-id' => AuthComponent::user()['id'],
+            'path-to-user-inbox' => Router::url(array(
+                'controller' => 'messages',
+                'action' => 'conversation'
+                )),
+            'data-path-to-img' => $this->webroot.'img/'    
             ));?>
         </div>
-    
-    </div>
 </div>
+
+
+    
 
