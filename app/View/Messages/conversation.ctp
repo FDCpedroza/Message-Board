@@ -1,7 +1,6 @@
 <?php
 $this->extend('/Layouts/card');
 echo $this->element('navbar', array('messageListActive' => 'active'));
-//echo $this->html->link('New Message', ['controller' => 'messages', 'action' => 'compose']);
 echo $this->html->css('navbar');
 echo $this->Html->script('conversation.js');
 ?>
@@ -24,10 +23,6 @@ echo $this->Html->script('conversation.js');
             ));?>
     </div>
 </div>
-
-
-
-
 
 <div class='row'>
     <div class='col-lg-9'></div>

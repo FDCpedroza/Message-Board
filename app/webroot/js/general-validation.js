@@ -7,14 +7,18 @@ $(document).ready(function() {
             onfocusout: false,
             errorClass: 'text-danger',
             errorElement: 'span',
-            
+            ignore: [],
             rules: {
-            'data[User][name]': {
-                    required: true,
-                    maxlength: 20,
-                    minlength: 5
+                'data[User][Upload Pic]':{
+                    //required: true,
+                    extension: "jpg|gif|png"
                 },
-            
+                'data[User][name]': {
+                        required: true,
+                        maxlength: 20,
+                        minlength: 5
+                    },
+                
                 'data[User][email]': {
                     remote:{
                         url:"checkEmail/",
@@ -38,11 +42,15 @@ $(document).ready(function() {
                 
             },
             messages: {
+                'data[User][Upload Pic]':{
+                    required: 'Picture is required.',
+                    extension: "File should be jpg, gif or png only."
+                 },
             
                 'data[User][name]': {
                     required: "Name is required",
                     maxlength: "Your last name maxlength should be 50 characters long.",
-                    minlength: "The name should be 3 digits",
+                    minlength: "The name should be 5 digits",
                 },
             
                 'data[User][email]': {

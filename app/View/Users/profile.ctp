@@ -35,6 +35,7 @@
                 'action' => 'profile',
             )
     ));
+    //echo $user['image'];
     echo $this->Form->input(
         'Upload Pic', 
         array( 

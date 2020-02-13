@@ -1,10 +1,10 @@
 <?php
 $this->extend('/Layouts/card');
 echo $this->element('navbar', array('composeActive' => 'active'));
-//echo $this->html->link('New Message', ['controller' => 'messages', 'action' => 'compose']);
 echo $this->html->css('navbar');
 ?>
 <?php
+
 
 echo $this->form->create('Message', 
     array(
@@ -16,6 +16,7 @@ echo $this->form->create('Message',
 echo $this->form->input('Recepient', 
     array(
         'options' => $users,
+        'empty' => '',
         'class' => 'custom-select'
     ),
     
@@ -37,12 +38,12 @@ echo $this->form->textarea('Message', array(
     'aria-label'=>"With textarea",
     'rows' => 10
 ));
-//echo $this->form->end('Send');
 
 echo '<br>'.$this->Form->end(array(
     'label' => __('Send'),
-    'class' => 'btn btn-block',
+    'class' => 'btn btn-block message-btn',
     'id' => 'form-submit',
+    'disabled' => 'disabled',
     'div' => array(
         'class' => 'control-group',
         ),

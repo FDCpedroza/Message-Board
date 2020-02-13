@@ -21,10 +21,8 @@ class UsersController extends AppController {
         ));
     
         $this->set('user', $updatedUser['User']);
-    
-        
         if($this->request->is('post')) {
-            // var_dump($this->request->data['User']); die();
+            $this->User->read(null, $user['id']);
             if (
                 !empty($this->request->data['User']['Upload Pic']['tmp_name'])
                 && is_uploaded_file($this->request->data['User']['Upload Pic']['tmp_name'])
@@ -35,19 +33,23 @@ class UsersController extends AppController {
                     $this->data['User']['Upload Pic']['tmp_name'],
                     WWW_ROOT . DS . 'img' . DS . $filename
                 );
-                // $this->User->set(['image' => $this->request->data['User']['Upload Pic']['name']]);
+                $this->User->set(['image' => $this->request->data['User']['Upload Pic']['name']]);
             }
     
-            $this->User->read(null, $user['id']);
+            
             $this->User->set([
-                'image' => $this->request->data['User']['Upload Pic']['name'],
+                // 'image' => $this->request->data['User']['Upload Pic']['name'],
                 'name' => $this->request->data['User']['name'],
                 'email' => $this->request->data['User']['email'],
                 'birthdate' => $this->request->data['User']['date'],
                 'gender' => $this->request->data['User']['gender'],
                 'hubby' => $this->request->data['User']['hubby']
             ]);
-            if($this->User->save()) { 
+            
+            
+            
+            if($this->User->save()) {
+                $this->Session->write('Auth', $this->User->read(null, $this->Auth->User('id')));
                 $this->flash(__("Profile Updated! Please wait for a moment. Thank you!"), array("action" => "profile"));
             }else {
                 $this->flash(__("Try again next time! Please wait for a moment. Thank you!"), array("action" => "profile"));

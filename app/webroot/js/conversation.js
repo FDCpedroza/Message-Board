@@ -26,7 +26,6 @@ $(document).ready(function() {
             data: formData,
             success: function(data,textStatus,xhr){
                     //alert(data);
-                   
             },
             error: function(xhr,textStatus,error){
                     alert(textStatus);
@@ -61,13 +60,11 @@ var x = 10;
             data: formData,
             success: function(res,textStatus,xhr){
                 x = offset + 10;
-                //console.log(res.data)
                 if(res.data.length == 0) {
                     $('#show-more-msg').replaceWith('No more messages to show.');
                 }
                 
                 $.each(res.data, function(i, val) {
-                    // console.log(val)
                     makeMsgDiv(val, res.user, res.reciever);
                 })
             },

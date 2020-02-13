@@ -5,7 +5,12 @@
         public $uses = ['User'];
 
         public function login() {
-
+            
+            if($this->Auth->user()) {
+                $this->redirect(array('controller' => 'messages', 'action' => 'list'));
+                return;
+            }
+            
             $this->viewPath = '/';
             $this->render('login');
 

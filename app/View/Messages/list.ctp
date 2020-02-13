@@ -5,6 +5,25 @@ echo $this->element('navbar', array('messageListActive' => 'active'));
 echo $this->html->css('list');
 echo $this->html->script('list.js');
 ?>
+<div class='row '>
+    
+    <div class="input-group my-3 mx-4">
+    <input 
+        id='search-input' 
+        type="text" 
+        class="form-control" 
+        placeholder="Recipient's username" 
+        aria-label="Recipient's username" 
+        aria-describedby="basic-addon2"
+        search-link='<?php echo Router::url(array('controller' => 'messages', 'action' => 'search')) ?>'
+        data-user-id = '<?php echo AuthComponent::user()['id'] ?>'
+    >
+    <div class="input-group-append">
+        <button onClick="window.location.href=window.location.href" id='reset-btn' class="btn btn-outline-secondary" type="button">Reset</button>
+    </div>
+    </div>
+
+</div>
 
 <div class="list-group" id='list-div'>
     
@@ -55,12 +74,12 @@ echo $this->html->script('list.js');
                 </div>
                 <div class='col-lg-10'>
                     <div class='row'>
-                            <div class='row pl-4 text-capitalize font-weight-bold'>
+                            <div id='name-div' class='row pl-4 text-capitalize font-weight-bold'>
                                 <?php echo $message['chat_mate']['name'];?>
                             </div>
                     </div>
                     <div class='row'>
-                            <div class='row pl-4 message-row ' 
+                            <div id='message-div' class='row pl-4 message-row' 
                             style='white-space: nowrap;
                             overflow: hidden;
                             text-overflow: ellipsis;
@@ -69,7 +88,7 @@ echo $this->html->script('list.js');
                             </div>
                     </div>
                     <div class='row'>
-                            <div class='row pl-4 text-monospace text-muted' style='font-size: xx-small;'>
+                            <div id='date-div' class='row pl-4 text-monospace text-muted' style='font-size: xx-small;'>
                                 <?php echo $message['latest_chat']['created'];?>        
                             </div>
                     </div>

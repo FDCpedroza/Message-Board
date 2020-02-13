@@ -1,3 +1,7 @@
 .nav-bottom { 
     margin-left: -20px;
 }
+
+span.select2-selection__arrow {
+    display: none;
+}
