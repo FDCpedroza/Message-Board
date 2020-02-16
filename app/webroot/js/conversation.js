@@ -1,4 +1,15 @@
 $(document).ready(function() {
+    var conn = new WebSocket('ws://localhost:8080');
+    conn.onopen = function(e) {
+        console.log("Connection established!");
+    };
+
+    conn.onmessage = function (e) {
+        // console.log(JSON.parse(e));
+        hasMessage(e);
+    };
+
+
     $('.message-input').on('keyup', function() {
       var empty = false;
   
@@ -19,16 +30,17 @@ $(document).ready(function() {
         var formData = $(this).serialize();
         //get form action
         var formUrl = $(this).attr('action');
-        
+        var msg = $('#message-input').val();
         $.ajax({
             type: 'POST',
             url: formUrl,
             data: formData,
             success: function(data,textStatus,xhr){
-                    //alert(data);
+                sendToWebServer(msg);    
+                // findAndAppendMsg(msg);
             },
             error: function(xhr,textStatus,error){
-                    alert(textStatus);
+                    alert('The Page is broken Please refresh!');
             }
         });	
         $('#message-input').val('');
@@ -37,7 +49,57 @@ $(document).ready(function() {
         return false;
         
     });
-var x = 10;
+
+    function hasMessage(e) {
+        var pageReciver = $('#message-input').attr('data-to');
+        var pageFrom = $('#message-input').attr('data-from');
+        var message  = JSON.parse(e.data);
+        if(pageFrom == message.to && pageReciver == message.from){
+            // console.log('message is for you');
+            var msg = {
+                to: message.to,
+                from: message.from,
+                msg: message.msg
+            };
+
+            findAndAppendMsg(msg, true);
+
+
+        }
+    }
+
+    function sendToWebServer(text) {
+        var msg = {
+            to : $('#message-input').attr('data-to'),
+            from : $('#message-input').attr('data-from'),
+            msg : text
+        };
+        conn.send(JSON.stringify(msg));
+        findAndAppendMsg(msg);
+    }
+    
+    function findAndAppendMsg(msg, recievedMessage = false) {
+        var url = $('#message-div').attr('data-find-message-url')
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: msg,
+            success: function(res) {    
+                    if( recievedMessage){
+                        makeMsgDiv(res.data, res.reciever, res.user , true );
+                    } else {
+                        makeMsgDiv(res.data, res.user, res.reciever , true );
+                    }
+            },
+            error: function (error) {
+
+            } 
+        });
+
+    }
+
+
+    var x = 10;
     
     $('#show-more-msg').click(function(e) {
         e.preventDefault();
@@ -84,12 +146,13 @@ var x = 10;
     }
     
     
-    function makeMsgDiv(res, user, reciever) { 
+    function makeMsgDiv(res, user, reciever, prepend = false ) { 
         var main_div = document.createElement('div');
         var div_msg = main_div.cloneNode();
         var div_pic = main_div.cloneNode();
         var img = document.createElement('img');
         var webroot_img_path = $('#show-more-msg').attr('data-path-to-img');
+
         var userMsgDivClass = [
             'message-div',
             'col-9',
@@ -131,7 +194,7 @@ var x = 10;
             img.setAttribute('src', avatar);
         
             myAddClass(div_msg , userMsgDivClass);
-            
+            myAddClass(main_div, ['msg-from-user'])
             
             main_div.appendChild(div_msg);
             div_pic.appendChild(img)
@@ -146,15 +209,19 @@ var x = 10;
                 avatar = webroot_img_path + reciever.image
             }
             img.setAttribute('src', avatar);
-            
+            myAddClass(main_div, ['msg-from-someone'])
             myAddClass(div_msg , recieverMsgDivClass);
             main_div.appendChild(div_pic);
             div_pic.appendChild(img)
             main_div.appendChild(div_msg);
             
         }
+        if(prepend) {
+            $("#message-div").prepend(main_div);    
+        }else {
+            $("#message-div").append(main_div);
+        }
         
-        $("#message-div").append(main_div);
         
     }
     

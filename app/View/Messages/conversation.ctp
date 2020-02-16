@@ -3,6 +3,7 @@ $this->extend('/Layouts/card');
 echo $this->element('navbar', array('messageListActive' => 'active'));
 echo $this->html->css('navbar');
 echo $this->Html->script('conversation.js');
+echo $this->Html->script('realtime.js');
 ?>
 
 
@@ -44,6 +45,8 @@ echo $this->Html->script('conversation.js');
             'id' => 'message-input',
             'class'=>"form-control mb-1 message-input",
             'aria-label'=>"With textarea",
+            'data-from' => AuthComponent::user()['id'],
+            'data-to' => $reciever['id']
             ));
     echo $this->Form->end(array(
         'label' => __('Send'),
@@ -57,12 +60,14 @@ echo $this->Html->script('conversation.js');
         'after' => '</div>'
         ));
     echo $this->html->css('conversation');
+
+    $specficMessageUrl = Router::url(['controller' => 'messages', 'action' => 'findMsg']);
     
 ?>
 
 <br><hr>
 
-<div id='message-div'>
+<div id='message-div' data-find-message-url="<?php echo $specficMessageUrl; ?>">
     <?php
         foreach ($conversation as $convo) :
             $avatar = 'https://ui-avatars.com/api/?name='.($convo['message']['to_id'] == AuthComponent::user()['id']? $reciever['name']: AuthComponent::user()['name']);
@@ -71,8 +76,9 @@ echo $this->Html->script('conversation.js');
             }elseif($convo['message']['to_id'] != AuthComponent::user()['id'] && AuthComponent::user()['image']) {
                 $avatar = AuthComponent::user()['image'];
             }
+            $determiner = ($convo['message']['from_id'] == AuthComponent::user()['id']? 'msg-from-user': 'msg-from-someone')
     ?>
-    <div class='row' id='msg-row-id-<?php echo $convo['message']['id']?>'>
+    <div class='row <?php echo $determiner ?>' id='msg-row-id-<?php echo $convo['message']['id']?>'>
         <!-- someone -->
         <?php if($convo['message']['to_id'] == AuthComponent::user()['id']): ?>    
             <div class='col-2 text-right'>

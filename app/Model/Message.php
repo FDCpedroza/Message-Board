@@ -3,6 +3,19 @@ App::uses('Sanitize', 'Utility');
 
 class Message extends AppModel {
     
+    public function getSpecficMessage($to, $from, $msg) {
+        return $this->find(
+            'first',
+            array(
+                'conditions' => array(
+                    'to_id' => $to,
+                    'from_id' => $from,
+                    'content LIKE' => $msg
+                )
+            )
+        );
+    }
+    
     public function getMessage($id){
         return $this->find('first', array(
             'conditions' => array('id' => $id)

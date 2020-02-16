@@ -3,6 +3,24 @@
 class MessagesController extends AppController {
     
     public $uses = ['message', 'user'];
+
+    public function findMsg() {        
+        $this->render(false);
+        $to = $this->request->data['to'];
+        $from = $this->request->data['from'];
+        $msg = $this->request->data['msg'];
+        $datas = $this->message->getSpecficMessage($to, $from, $msg);
+        $reciever = $this->user->getUser($to);
+        $user = $this->user->getUser($from);
+        $res = array(
+            'data' => $datas,
+            'reciever' => $reciever[0]['users'],
+            'user' => $user[0]['users']
+        );
+        $this->response->type('application/json');
+        $this->response->body(json_encode($res));
+        return;   
+    }
     
     
     public function loadMessageList() {
