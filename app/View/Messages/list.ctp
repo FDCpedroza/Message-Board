@@ -48,6 +48,7 @@ echo $this->html->script('list.js');
             'id' => $message['chat_mate']['id'],
             
         ]);
+        
     ?>
     
     
@@ -89,7 +90,7 @@ echo $this->html->script('list.js');
                     </div>
                     <div class='row'>
                             <div id='date-div' class='row pl-4 text-monospace text-muted' style='font-size: xx-small;'>
-                                <?php echo $message['latest_chat']['created'];?>        
+                                <?php echo date('g:i:s - n/j/y',strtotime($message['latest_chat']['created']));?>        
                             </div>
                     </div>
                 </div>

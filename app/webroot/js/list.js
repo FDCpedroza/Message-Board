@@ -29,7 +29,7 @@ $(document).ready(function() {
                 })
             },
             error: function(xhr,textStatus,error){
-                alert(textStatus);
+                alert('The Page is broken Please refresh!');
             }
         });
     })
@@ -147,7 +147,7 @@ $(document).ready(function() {
                 data = res; 
             },
             error: function(xhr,textStatus,error){
-                alert(textStatus);
+                alert('The Page is broken Please refresh!');
             }
         });
         

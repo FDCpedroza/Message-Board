@@ -3,6 +3,11 @@ $this->extend('/Layouts/card');
 echo $this->element('navbar', array('composeActive' => 'active'));
 echo $this->html->css('navbar');
 ?>
+
+<h2>
+Write A Message
+</h2>
+<br>
 <?php
 
 
@@ -26,7 +31,7 @@ echo $this->form->input('compose',
     array(
         'value' => '1',
         'class' => 'custom-select',
-        'type' => 'hidden'
+        'type' => 'hidden',
     ),
     
 );
@@ -36,7 +41,8 @@ echo '<br>';
 echo $this->form->textarea('Message', array(
     'class'=>"form-control message-input",
     'aria-label'=>"With textarea",
-    'rows' => 10
+    'rows' => 10,
+    'placeholder'  => 'Write your message here.'
 ));
 
 echo '<br>'.$this->Form->end(array(

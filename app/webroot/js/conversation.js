@@ -92,7 +92,7 @@ $(document).ready(function() {
                     }
             },
             error: function (error) {
-
+                alert('The Page is broken Please refresh!');
             } 
         });
 
@@ -131,7 +131,7 @@ $(document).ready(function() {
                 })
             },
             error: function(xhr,textStatus,error){
-                alert(textStatus);
+                alert('The Page is broken Please refresh!');
             }
         });
         
@@ -244,16 +244,20 @@ $(document).ready(function() {
             msg = res.message
         },
         error: function(xhr,textStatus,error){
-            alert(textStatus);
+            alert('The Page is broken Please refresh!');
         }
     });
     // msg = data['0']
     console.log(msg)
+    var d = new Date(msg.created);
+    var time = d.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    var date = ((d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1))) + '/' + ((d.getDate() > 9) ? d.getDate() : ('0' + d.getDate())) + '/' + d.getFullYear()
     
+    formatted_time = time+' '+date;
     var p = confirm(
         'Message Details \n'+
         'Content: '+ msg.content+'\n'+
-        'Created: '+msg.created+'\n\n\n'+
+        'Created: '+formatted_time+'\n\n\n'+
         'Press "OK" if you want to delete this message else press "CANCEL."'
         );
         
@@ -276,7 +280,7 @@ function deleteMessage(url, parentId) {
            }
         },
         error: function(xhr,textStatus,error){
-            alert(textStatus);
+            alert('The Page is broken Please refresh!');
         }
     });
     

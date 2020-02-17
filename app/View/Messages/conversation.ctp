@@ -9,7 +9,11 @@ echo $this->Html->script('realtime.js');
 
 <div class='row'>
     <div class='col'>
-        <h5 class='text-capitalize'> <?php echo $reciever['name']?></h2>
+        <h5 class='text-capitalize'>
+            <a class='black' href='<?php echo Router::url(['controller' => 'users', 'action' => 'person', 'id' => $reciever['id']]);?>'>
+                <?php echo $reciever['name']?>
+            </a>
+        </h5>
     </div>
     <div class='col text-right'>
         <?php echo $this->Html->link(

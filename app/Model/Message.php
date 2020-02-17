@@ -73,7 +73,7 @@ class Message extends AppModel {
     
     public function findWord($searchWord, $user){
        return $this->query("SELECT 
-                `latest_chat`.`id`, 
+                `latest_chat`.`id`,
                 `latest_chat`.`to_id`, 
                 `latest_chat`.`from_id`, 
                 `latest_chat`.`content`, 
@@ -81,33 +81,23 @@ class Message extends AppModel {
                 `chat_mate`.`id`,
                 `chat_mate`.`name`, 
                 `chat_mate`.`image`
-            FROM
-    
-                (SELECT `messages`.* 
-                FROM 
-                    (SELECT `id_table`.`id` FROM
-                    (SELECT `m_table`.`id`,
-                        `m_table`.`to_id`,
-                        `m_table`.`from_id`,
-                        `m_table`.`content`,
-                        `m_table`.`created`,
-                        `u_table`.`name`
-                        FROM 
-                            (SELECT * 
-                            FROM `messages` 
-                            WHERE `to_id` = $user
-                            OR `from_id` = $user) AS `m_table`
-                        INNER JOIN `cake_msg`.`users` AS `u_table`
-                        ON (CASE
-                                WHEN `m_table`.`to_id` = $user THEN `m_table`.`from_id` = `u_table`.`id`
-                                WHEN `m_table`.`from_id` = $user THEN `m_table`.`to_id` = `u_table`.`id`
-                            END)) AS `id_table`
-                    WHERE
-                        `id_table`.`content` LIKE '%$searchWord%'
-                    OR
-                        `id_table`.`name` LIKE '%$searchWord%') as `id_t`
-                INNER JOIN `cake_msg`.`messages` 
-                ON `id_t`.`id` =  `messages`.`id`) AS `latest_chat`
+            FROM 
+                (SELECT 
+                    MAX(`m`.`id`) as `id`
+                FROM `cake_msg`.`messages` as `m`
+                INNER JOIN `cake_msg`.`users` as `u`
+                ON(CASE
+                        WHEN `m`.`to_id` = $user THEN `m`.`from_id` = `u`.`id`
+                        WHEN `m`.`from_id` = $user THEN `m`.`to_id` = `u`.`id`
+                    END)
+                WHERE (`m`.`to_id` = $user OR `m`.`from_id` = $user)
+                AND (`m`.`content` LIKE '%$searchWord%' OR `u`.`name` LIKE '%$searchWord%')
+                GROUP BY(CASE
+                                WHEN `m`.`to_id` = $user THEN `m`.`from_id`
+                                WHEN `m`.`from_id` = $user THEN `m`.`to_id`
+                        END)) as `m_id`
+            INNER JOIN `cake_msg`.`messages` as `latest_chat`
+            ON `m_id`.`id` = `latest_chat`.id
             LEFT JOIN `cake_msg`.`users` AS `chat_mate`
             ON 
                 (CASE 

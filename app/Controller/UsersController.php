@@ -13,6 +13,12 @@ class UsersController extends AppController {
         
     }
     
+    public function person() {
+        if($this->Auth->user()) {
+            $this->set('person', $this->User->getUser($this->request->id)[0]["users"]);
+        }  
+    }
+    
     public function profile() {
         
         $user = $this->Auth->user();

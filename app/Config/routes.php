@@ -43,7 +43,8 @@
 	
 	//makes the prefix "/users/:action" into '/user/:action'  
 	Router::connect('/user/:action', array('controller' => 'users'));
-
+	Router::connect('/user/:action/:id', array('controller' => 'users', 'action' => 'person'));
+	
 	// Router::connect('/message/**', 
 	// 	array('controller' => 'messages', 'action' => 'conversation'), 
 	// 	array('pass' => array('id'))

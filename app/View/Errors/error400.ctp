@@ -13,7 +13,13 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+	$this->extend('/Layouts/card');
+	echo $this->element('navbar');
+	echo $this->html->css('navbar');
+
+
 ?>
+
 <h2><?php echo $message; ?></h2>
 <p class="error">
 	<strong><?php echo __d('cake', 'Error'); ?>: </strong>
@@ -22,6 +28,12 @@
 		"<strong>'{$url}'</strong>"
 	); ?>
 </p>
+
+<br><br><br>
+<h3>
+Click <strong><?= $this->Html->link(__('THIS'), array('controller' => 'messages', 'action' => 'list')) ?></strong> to go to Messages Page
+</h3>
+
 <?php
 if (Configure::read('debug') > 0):
 	echo $this->element('exception_stack_trace');
