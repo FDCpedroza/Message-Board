@@ -19,7 +19,7 @@ div#ui-datepicker-div {
     width: 100%;
     position: absolute;
     bottom: 0px;
-    margin-left: -20px;
+    z-index: 99;
     background-color: white;    
 }
 
@@ -34,3 +34,8 @@ li.nav-item {
     border-radius: 0%;
 }
  
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+    display: none;
+}

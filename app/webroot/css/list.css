@@ -1,37 +1,24 @@
-.msg-div{
-    height: 150px;
-    margin-top: 20px;
-    position: relative;
+.card-body {
+    padding: unset;
 }
 
-.avatar-div{
-    margin-left:30px;
-    float: left;
+.list-img {
+    width:50px; 
+    height:50px;
 }
 
-.date-div{
-    position: absolute; 
-    bottom: 0px; 
-    padding-bottom: 3%;
-    padding-left: 8%;
-    font-size: .7em;
+.message-row {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
 }
 
-p.name {
-    text-align: center;
-    text-transform: capitalize;
-}
-
-.content-div {
-    padding-top: 2%;
-    padding-left: 8%;
+.list-date {
+    font-size: xx-small;
 }
 
 
-
-.chat-paragraph :before {
-    content: open-quote;
-}
-.chat-paragraph :after {
-    content: close-quote;
+.delete-items {
+    margin: auto;
 }

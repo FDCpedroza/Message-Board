@@ -1,15 +1,16 @@
 if ($("#editUserForm").length > 0) {
     $("#editUserForm").validate({
-    onkeyup: false,
-    onclick: false,
+        onkeyup: false,
+        onclick: false,
+        onfocusout: false,
     errorClass: 'text-danger',
     errorElement: 'span',
     
     rules: {
-        'data[User][Upload Pic]':{
+        // 'data[User][Upload Pic]':{
            //required: true,
-           extension: "jpg|gif|png"
-        },
+           //extension: "jpg|gif|png"
+        // },
        'data[User][name]': {
             required: true,
             maxlength: 20,
@@ -67,11 +68,13 @@ if ($("#editUserForm").length > 0) {
             
     },
     showErrors: function(errorMap, errorList) {
+        console.log(errorList)
         var messages = '';
         $.each( errorList, function( i, val ) {
             messages = messages + "<li>" + errorList[i].message + "</li>";
         });
         $("#summary").html(messages);
+        
     },
     submitHandler: function(form) { // <- pass 'form' argument in
         $("#submit").attr("disabled", true);

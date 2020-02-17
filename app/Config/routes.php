@@ -30,6 +30,36 @@
  * ...and connect the rest of 'Pages' controller's URLs.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+	
+	Router::connect('/message/inbox/:id', array('controller' => 'messages', 'action' => 'conversation'));
+
+	//login and logout custom routes
+	Router::connect(
+		'/:action', 
+		array(
+			'controller' => 'loginlogout', 
+			'action' => array('login', 'logout')
+		));
+	
+	//makes the prefix "/users/:action" into '/user/:action'  
+	Router::connect('/user/:action', array('controller' => 'users'));
+	Router::connect('/user/:action/:id', array('controller' => 'users', 'action' => 'person'));
+	
+	// Router::connect('/message/**', 
+	// 	array('controller' => 'messages', 'action' => 'conversation'), 
+	// 	array('pass' => array('id'))
+	// );
+	
+	// //  /messsages > /message
+	// Router::connect('/message/**', array('controller' => 'messages'));
+
+	
+	
+	
+
+	
+
+
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on

@@ -36,28 +36,19 @@ class AppController extends Controller {
         'Session', 
         'Auth' => array(
             'loginAction' => array(
-                'controller' => 'users',
+                'controller' => 'loginlogout',
                 'action' => 'login',
             ),
             'logoutRedirect' => array(
-                'controller' => 'users',
+                'controller' => 'loginlogout',
                 'action' => 'login',
                 'home'
             ),
-            // 'authenticate' => array(
-            //     'Form' => array(
-            //         'fields' => array(
-            //             'passwordHasher' => array(
-            //                 'className' => 'Simple',
-            //                 'hashType' => 'sha256'
-            //                 ),
-            //             'username' => 'email',
-            //             'password' => 'password')
-            //     )
-            // ),
-            // 'authError' => 'Did you really think you are allowed to see that?',
-
         )
         
     );
+
+    public function beforeRender() {
+        $this->layout = 'main-layout';
+    }
 }
